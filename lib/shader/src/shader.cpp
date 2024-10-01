@@ -6,13 +6,15 @@
 
 #include <game/shader.hpp>
 
+#include <game/log.hpp>
+
 std::string gm::load_shader(std::string filename) {
     std::ifstream file(SHADER_PATH + filename, std::ios_base::ate);
 
     if (!file.is_open()) {
-        std::cerr << "Failed to open file " << filename << std::endl;
-        std::cerr << "Are you running the program from the correct location?" << std::endl;
-        return ""; // define error handling
+        LOG("Failed to open file " << filename);
+        LOG("Are you running the program from the correct location?");
+        terminate();
     }
 
     std::string result(SHADER_VERSION.size() + file.tellg(), ' ');
