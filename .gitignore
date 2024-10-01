@@ -2,3 +2,7 @@
 build*
 # clangd
 .cache
+# temp
+assets
+*.dll
+*.so
