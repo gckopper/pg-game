@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <iostream>
 
 #ifdef DEBUG 
 #define LOG(X) std::cerr << X << std::endl; 
