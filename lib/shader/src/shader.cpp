@@ -38,10 +38,7 @@ GLuint gm::compile_shader(std::string shader_code, GLenum shader_type) {
     glGetShaderiv(shader,  GL_COMPILE_STATUS, &success);
     // compilation failed
     if (!success) {
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &success);
-        std::string log(success, ' ');
-        glGetShaderInfoLog(shader, success, NULL, log.data());
-        LOG("Shader compilation failed with error: " << log);
+        log_shader(shader);
         terminate();
     }
     return shader;
@@ -62,10 +59,7 @@ GLuint gm::make_shader_program(std::string vert_path, std::string frag_path) {
 
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &success);
-        std::string log(success, ' ');
-        glGetProgramInfoLog(shaderProgram, success, NULL, log.data());
-        LOG("Shader linking failed with error: " << log);
+        log_program(shaderProgram);
         terminate();
     }
     
