@@ -16,7 +16,7 @@ GLFWwindow* gm::setup_glfw(int width, int height, std::string title) {
 
     GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 	glfwMakeContextCurrent(window);
-    if (gladLoadGL() == 0) {
+    if (gladLoadGLLoader((GLADloadproc) glfwGetProcAddress) == 0) {
         LOG("Failed to initialize OpenGL context");
         terminate();
     }
