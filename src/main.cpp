@@ -1,5 +1,6 @@
 #include <game/time.hpp>
 #include <game/utils.hpp>
+#include <game/shader.hpp>
 
 #include <GLFW/glfw3.h>
 
@@ -8,6 +9,8 @@ int main() {
     gm::time_point time, last_tick_time{gm::get_time()};
 
     GLFWwindow* window = gm::setup_glfw(1280, 720, "PG Game");
+
+    GLuint shader =  gm::make_shader_program("main.vert", "main.frag");
 
     while (!glfwWindowShouldClose(window)) {
         time = gm::get_time();
