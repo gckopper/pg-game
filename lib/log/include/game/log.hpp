@@ -11,4 +11,6 @@
 
 namespace gm {
     void terminate();
+    void log_shader(GLuint shader);
+    void log_program(GLuint program);
 }
