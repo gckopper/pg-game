@@ -14,6 +14,9 @@ GLFWwindow* gm::setup_glfw(int width, int height, std::string title) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+
     GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 	glfwMakeContextCurrent(window);
     if (gladLoadGLLoader((GLADloadproc) glfwGetProcAddress) == 0) {
