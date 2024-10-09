@@ -1,5 +1,3 @@
-#include <game/types.hpp>
-#include <game/log.hpp>
 #include <game/time.hpp>
 #include <game/utils.hpp>
 #include <game/shader.hpp>
