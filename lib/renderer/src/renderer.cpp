@@ -26,6 +26,7 @@ void gm::render(uint64_t time_diff, GLFWwindow* window, game g) {
     glBindVertexArray(g.entity_render.vao);
     glUniform1i(g.entity_render.u_tex, 0);
     glUniform1f(g.entity_render.u_time, percentage);
+    // missing projection matrix uniform
 
     glDrawElements(GL_TRIANGLES, 6*(1+g.mobs_count), GL_UNSIGNED_INT, 0);
 
