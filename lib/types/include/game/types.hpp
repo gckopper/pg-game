@@ -6,6 +6,8 @@
 
 namespace gm {
     constexpr uint64_t MAX_MOBS = 128;
+    constexpr uint64_t HEIGHT = 720;
+    constexpr uint64_t WIDTH = 1280;
     struct coord {
         float x = 0, y = 0;
     };
@@ -14,23 +16,34 @@ namespace gm {
         coord pos;
         coord tex;
     };
+    constexpr uint64_t VERT_SIZE = sizeof(vertex);
+    constexpr uint64_t VERT_SIZE_FLOATS = sizeof(vertex)/sizeof(float);
+    struct render_unit {
+        uint32_t vao;
+        uint32_t vbo;
+        uint32_t tex;
+        uint32_t shader;
+        int32_t  u_time;
+        int32_t  u_tex;
+    };
     struct background {
         coord shift;
+        render_unit render;
     };
     struct player {
-        int health = 100;
-        int damage = 69;
+        uint32_t health = 100;
+        uint32_t damage = 69;
     };
     struct mob {
         coord pos;
-        int health;
-        int damage;
+        uint32_t health;
+        uint32_t damage;
     };
     struct game {
         background bg;
-        player player;
+        player p;
         std::array<mob, MAX_MOBS> mobs;
-        int mobs_count = 0;
-        unsigned int vbo;
+        uint32_t mobs_count = 0;
+        render_unit entity_render;
     };
 }
