@@ -20,7 +20,7 @@ inline time_point get_time() {
     return std::chrono::time_point_cast<duration>(clock::now());
 }
 
-constexpr const uint8_t  TICK_RATE = 20;
-constexpr const duration TICK_STEP = duration{std::chrono::seconds{1}} / TICK_RATE;
+constexpr uint8_t  TICK_RATE = 20;
+constexpr duration TICK_STEP = duration{std::chrono::seconds{1}} / TICK_RATE;
 
 }
