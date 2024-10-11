@@ -1,31 +1,36 @@
-#include <game/utils.hpp>
-
-#include <game/log.hpp>
 #include <cstdlib>
 
-GLFWwindow* gm::setup_glfw(int width, int height, std::string title) {
-    if (glfwInit() == GLFW_FALSE) {
-        LOG("Failed to create GLFW context");
-        terminate();
-    }
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include <game/log.hpp>
+#include <game/utils.hpp>
+
+GLFWwindow* gm::init_context(int width, int height, std::string title) {
+    glfwSetErrorCallback(glfw_error_callback);
+    glfwInit();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
-
-    GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	glfwMakeContextCurrent(window);
+
+    glfwSetFramebufferSizeCallback(window, glfw_framebuffer_size_callback);
+
     if (gladLoadGLLoader((GLADloadproc) glfwGetProcAddress) == 0) {
         LOG("Failed to initialize OpenGL context");
         terminate();
     }
-    int fb_width, fb_height;
-    glfwGetFramebufferSize(window, &fb_width, &fb_height);
-	glViewport(fb_width, fb_height, fb_width, fb_height);
+
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+
     return window;
 }
 
