@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 
 #include <game/sprite.hpp>
+#include <game/utils.hpp>
 
 namespace gm {
 
@@ -30,6 +31,8 @@ struct player {
     uint8_t hitbox_height = 18;
 
     uint8_t attack_cooldown = UINT8_MAX;
+
+    coordinate world_pos = {(WORLD_WIDTH - 12) / 2.0f, (WORLD_HEIGHT - 18) / 2.0f};
 
     const sprite* sprite = &sprites::PLAYER_WALK;
     uint8_t sprite_tick  = 0;
@@ -89,7 +92,7 @@ constexpr enemy make_enemy(enemy_type type, coordinate pos) {
             .hitbox_width   = 13,
             .hitbox_height  = 16,
             .world_pos      = pos,
-            .tex_pos        = {pos.x + (SPRITE_SIZE - 13) / 2.0f, pos.y + (SPRITE_SIZE - 16) / 2.0f},
+            .tex_pos        = {pos.x - (SPRITE_SIZE - 13) / 2.0f, pos.y - (SPRITE_SIZE - 16) / 2.0f},
             .delta_pos      = {0.0f, 0.0f},
             .sprite         = &sprites::ORC_WALK,
             .sprite_tick    = 0,
