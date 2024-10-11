@@ -3,11 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 
-void gm::terminate() {
-    glfwTerminate();
-    std::abort();
-}
-
 void gm::log_shader(GLuint shader) {
     int success;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &success);
