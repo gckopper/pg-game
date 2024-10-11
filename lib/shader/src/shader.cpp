@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 
-#include <game/shader.hpp>
-
 #include <game/log.hpp>
+#include <game/shader.hpp>
+#include <game/utils.hpp>
 
 std::string gm::load_shader(std::string filename) {
     std::ifstream file(SHADER_PATH + filename, std::ios_base::ate);
