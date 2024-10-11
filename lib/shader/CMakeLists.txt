@@ -4,7 +4,7 @@ project(shader)
 
 add_library(${PROJECT_NAME} STATIC "include/game/shader.hpp" "src/shader.cpp")
 
-target_link_libraries(${PROJECT_NAME} log glad)
+target_link_libraries(${PROJECT_NAME} glad log utils)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG)
