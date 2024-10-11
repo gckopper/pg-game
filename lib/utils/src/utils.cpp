@@ -28,3 +28,8 @@ GLFWwindow* gm::setup_glfw(int width, int height, std::string title) {
 	glViewport(fb_width, fb_height, fb_width, fb_height);
     return window;
 }
+
+void gm::terminate() {
+    glfwTerminate();
+    std::abort();
+}
