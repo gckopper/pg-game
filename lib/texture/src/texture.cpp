@@ -1,6 +1,6 @@
-#include <game/texture.hpp>
-
 #include <game/log.hpp>
+#include <game/texture.hpp>
+#include <game/utils.hpp>
 
 GLuint gm::load_texture(std::string path) {
     stbi_set_flip_vertically_on_load(1);
