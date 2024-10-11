@@ -1,37 +1,76 @@
+#include <chrono>
+#include <iomanip>
+#include <iostream>
+
+#include <glad/glad.h>
+#include <glfw/glfw3.h>
+
+#include <game/entity.hpp>
+#include <game/sprite.hpp>
+#include <game/state.hpp>
 #include <game/time.hpp>
 #include <game/utils.hpp>
-#include <game/shader.hpp>
-
-#include <GLFW/glfw3.h>
 
 int main() {
-    gm::duration delta_time;
-    gm::time_point time, last_tick_time{gm::get_time()};
+    GLFWwindow* window = gm::init_context(gm::WINDOW_WIDTH, gm::WINDOW_HEIGHT, "PG Game");
 
-    GLFWwindow* window = gm::setup_glfw(1280, 720, "PG Game");
+    gm::entities e;
+    gm::setup_entities(e);
 
-    GLuint shader =  gm::make_shader_program("main.vert", "main.frag");
+    e.enemies[0] = gm::make_enemy(gm::ORC, {100.0f, 100.0f});
+    e.enemies[1] = gm::make_enemy(gm::ORC, {200.0f, 100.0f});
+    e.enemies[1].sprite = gm::get_sprite(e.enemies[1].type, gm::DEATH);
+    e.enemy_count = 2;
+    e.player.sprite = &gm::sprites::PLAYER_ATTACK;
+    gm::update_vbo(e);
 
-    // Since it is the only shader program we'll use it is better to bind it here
-    glUseProgram(shader);
+    glUseProgram(e.shader_program);
+    glBindTexture(GL_TEXTURE_2D, e.texture);
+    glBindVertexArray(e.vao);
+
+    int frames = 0;
+    int ticks = 0;
+
+    gm::duration delta_time = gm::duration::zero();
+    gm::time_point previous_time, current_time{gm::get_time()};
+
+    gm::time_point prev = previous_time;
 
     while (!glfwWindowShouldClose(window)) {
-        time = gm::get_time();
-        delta_time = time - last_tick_time;
+        previous_time = current_time;
+        current_time = gm::get_time();
+        delta_time += (current_time - previous_time);
 
-        glfwPollEvents();
+        while (delta_time >= gm::TICK_STEP) {
+            e.enemies[0].sprite_tick = (e.enemies[0].sprite_tick + 1) % (e.enemies[0].sprite->FRAME_COUNT * gm::SPRITE_STEP);
+            e.enemies[1].sprite_tick = (e.enemies[1].sprite_tick + 1) % (e.enemies[1].sprite->FRAME_COUNT * gm::SPRITE_STEP);
+            e.player.sprite_tick = (e.player.sprite_tick + 1) % (e.player.sprite->FRAME_COUNT * gm::SPRITE_STEP);
+            gm::update_vbo(e);
 
-        // render(delta_time.count(), window);
-
-        if (delta_time >= gm::TICK_STEP) {
-            // update_state();
-
-            last_tick_time = time;
+            ++ticks;
+            
+            delta_time -= gm::TICK_STEP;
         }
-    }
 
-    // Unload shader program
-    glUseProgram(0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDrawElements(GL_TRIANGLES, (1 + e.enemy_count) * 6, GL_UNSIGNED_SHORT, (GLvoid*) 0);
+
+        ++frames;
+
+        if ((current_time - prev) >= std::chrono::seconds(1)) {
+            std::cout << "TPS: " << std::fixed << std::setprecision(3) <<  (ticks / float((current_time - prev).count()) * gm::duration(std::chrono::seconds(1)).count()) << std::endl;
+            std::cout << "FPS: " << std::fixed << std::setprecision(3) << (frames / float((current_time - prev).count()) * gm::duration(std::chrono::seconds(1)).count()) << std::endl;
+
+            ticks = 0;
+            frames = 0;
+            prev = current_time;
+
+            e.player.sprite_flipped = !e.player.sprite_flipped;
+        }
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 
     glfwTerminate();
 

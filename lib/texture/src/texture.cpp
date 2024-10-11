@@ -6,7 +6,7 @@ GLuint gm::load_texture(std::string path) {
     stbi_set_flip_vertically_on_load(1);
     
     int height, width, n;
-    unsigned char* data = stbi_load(path.c_str(), &height, &width, &n, 0);
+    unsigned char* data = stbi_load(path.c_str(), &width, &height, &n, 0);
     if (data == 0) {
         LOG("Failed to load texture " << path);
         terminate();
