@@ -17,7 +17,7 @@ int main() {
     gm::entities e;
     gm::setup_entities(e);
 
-    e.enemies[0] = gm::make_enemy(gm::ORC, {100.0f, 100.0f});
+    e.enemies[0] = gm::make_enemy(gm::ORC, {100.0f, 180.0f});
     e.enemies[1] = gm::make_enemy(gm::ORC, {200.0f, 100.0f});
     e.enemies[1].sprite = gm::get_sprite(e.enemies[1].type, gm::DEATH);
     e.enemy_count = 2;
@@ -43,9 +43,15 @@ int main() {
 
         while (delta_time >= gm::TICK_STEP) {
             e.enemies[0].sprite_tick = (e.enemies[0].sprite_tick + 1) % (e.enemies[0].sprite->FRAME_COUNT * gm::SPRITE_STEP);
+            e.enemies[0].tex_pos.x += 2;
+            e.enemies[0].world_pos.x += 2;
             e.enemies[1].sprite_tick = (e.enemies[1].sprite_tick + 1) % (e.enemies[1].sprite->FRAME_COUNT * gm::SPRITE_STEP);
             e.player.sprite_tick = (e.player.sprite_tick + 1) % (e.player.sprite->FRAME_COUNT * gm::SPRITE_STEP);
             gm::update_vbo(e);
+
+            if (gm::colliding(e.player, e.enemies[0])) {
+                std::cout << "collision!" << std::endl;
+            }
 
             ++ticks;
             
