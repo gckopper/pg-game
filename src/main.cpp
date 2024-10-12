@@ -44,17 +44,16 @@ int main() {
     int frames = 0;
     int ticks = 0;
 
-    gm::duration delta_time = gm::duration::zero();
-    gm::time_point previous_time, current_time{gm::get_time()};
+    gm::duration delta_time;
+    gm::time_point current_time, last_tick_time{gm::get_time()};
 
-    gm::time_point prev = previous_time;
+    gm::time_point prev = last_tick_time;
 
     while (!glfwWindowShouldClose(window)) {
-        previous_time = current_time;
         current_time = gm::get_time();
-        delta_time += (current_time - previous_time);
+        delta_time = current_time - last_tick_time;
 
-        while (delta_time >= gm::TICK_STEP) {
+        if (delta_time >= gm::TICK_STEP) {
             e.enemies[0].sprite_tick = (e.enemies[0].sprite_tick + 1) % (e.enemies[0].sprite->FRAME_COUNT * gm::SPRITE_STEP);
             update_pos(e.enemies[0]);
 
@@ -69,7 +68,9 @@ int main() {
 
             ++ticks;
             
-            delta_time -= gm::TICK_STEP;
+            gm::time_t ratio = delta_time / gm::TICK_STEP;
+            delta_time -= ratio * gm::TICK_STEP;
+            last_tick_time += ratio * gm::TICK_STEP;
         }
 
         glUniform1f(glGetUniformLocation(e.shader_program, "delta_time"), GLfloat(delta_time.count()) / GLfloat(gm::TICK_STEP.count()));
@@ -79,8 +80,8 @@ int main() {
         ++frames;
 
         if ((current_time - prev) >= std::chrono::seconds(1)) {
-            std::cout << "TPS: " << std::fixed << std::setprecision(3) <<  (ticks / float((current_time - prev).count()) * gm::duration(std::chrono::seconds(1)).count()) << std::endl;
-            std::cout << "FPS: " << std::fixed << std::setprecision(3) << (frames / float((current_time - prev).count()) * gm::duration(std::chrono::seconds(1)).count()) << std::endl;
+            std::cout << "TPS: " << std::fixed << std::setprecision(3) <<  (ticks / float((gm::get_time() - prev).count()) * gm::duration(std::chrono::seconds(1)).count()) << std::endl;
+            std::cout << "FPS: " << std::fixed << std::setprecision(3) << (frames / float((gm::get_time() - prev).count()) * gm::duration(std::chrono::seconds(1)).count()) << std::endl;
 
             ticks = 0;
             frames = 0;
