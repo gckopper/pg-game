@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include <glad/glad.h>
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include <game/entity.hpp>
 #include <game/sprite.hpp>
@@ -14,7 +14,7 @@
 
 constexpr uint16_t ENEMY_SPEED = 3;
 
-void update_pos(gm::enemy& e) {
+void update_pos(gm::Enemy& e) {
     e.world_pos.x = uint16_t(e.world_pos.x + e.delta_pos.x) % uint16_t(gm::WORLD_WIDTH);
     e.tex_pos.x = uint16_t(e.tex_pos.x + e.delta_pos.x) % uint16_t(gm::WORLD_WIDTH);
 }
@@ -22,7 +22,7 @@ void update_pos(gm::enemy& e) {
 int main() {
     GLFWwindow* window = gm::init_context(gm::WINDOW_WIDTH, gm::WINDOW_HEIGHT, "PG Game");
 
-    gm::entities e;
+    gm::Entities e;
     gm::setup_entities(e);
 
     e.enemies[0] = gm::make_enemy(gm::ORC, {100.0f, 180.0f});
