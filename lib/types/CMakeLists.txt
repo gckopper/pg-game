@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.25)
 
 project(types)
 
-add_library(${PROJECT_NAME} INTERFACE "include/game/types.hpp")
+add_library(${PROJECT_NAME} STATIC "include/game/types.hpp" "src/types.cpp")
 
-set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+target_include_directories(${PROJECT_NAME} PUBLIC "include")
 
-target_include_directories(${PROJECT_NAME} INTERFACE "include")
+target_link_libraries(${PROJECT_NAME} PUBLIC glad shader sprite texture time utils)

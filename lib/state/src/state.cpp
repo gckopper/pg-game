@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-#include <game/entity.hpp>
+#include <game/types.hpp>
 #include <game/sprite.hpp>
 #include <game/state.hpp>
 
