@@ -16,39 +16,39 @@ constexpr uint8_t SPRITE_STEP = TICK_RATE / SPRITE_RATE;
 constexpr uint16_t ATLAS_WIDTH  = 8 * SPRITE_SIZE;
 constexpr uint16_t ATLAS_HEIGHT = 5 * SPRITE_SIZE;
 
-struct sprite {
+struct Sprite {
     const uint8_t FRAME_COUNT;
     const uint16_t ATLAS_POS;
 };
 
-enum sprite_type {
+enum SpriteType {
     WALK,
     DEATH
 };
 
 namespace sprites {
 
-constexpr sprite PLAYER_WALK {
+constexpr Sprite PLAYER_WALK {
     .FRAME_COUNT  = 8,
     .ATLAS_POS    = ATLAS_HEIGHT - 1 * SPRITE_SIZE
 };
 
-constexpr sprite PLAYER_ATTACK {
+constexpr Sprite PLAYER_ATTACK {
     .FRAME_COUNT  = 6,
     .ATLAS_POS    = ATLAS_HEIGHT - 2 * SPRITE_SIZE
 };
 
-constexpr sprite PLAYER_DEATH {
+constexpr Sprite PLAYER_DEATH {
     .FRAME_COUNT  = 4,
     .ATLAS_POS    = ATLAS_HEIGHT - 3 * SPRITE_SIZE
 };
 
-constexpr sprite ORC_WALK {
+constexpr Sprite ORC_WALK {
     .FRAME_COUNT  = 8,
     .ATLAS_POS    = ATLAS_HEIGHT - 4 * SPRITE_SIZE
 };
 
-constexpr sprite ORC_DEATH {
+constexpr Sprite ORC_DEATH {
     .FRAME_COUNT  = 4,
     .ATLAS_POS    = ATLAS_HEIGHT - 5 * SPRITE_SIZE
 };

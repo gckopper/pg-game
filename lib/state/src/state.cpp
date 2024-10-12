@@ -7,7 +7,7 @@
 #include <game/sprite.hpp>
 #include <game/state.hpp>
 
-void gm::update_vbo(entities& entities) {
+void gm::update_vbo(Entities& entities) {
     std::span<GLfloat> vbo_data = entities.vbo_data;
 
     constexpr auto sprite_offset = [](uint8_t sprite_tick) -> GLfloat {
@@ -45,7 +45,7 @@ void gm::update_vbo(entities& entities) {
     }
 
     for (uint16_t i = 0; i < entities.enemy_count; ++i) {
-        enemy& e = entities.enemies[i];
+        Enemy& e = entities.enemies[i];
         
         const uint16_t offset = (i + 1) * 24;
         
