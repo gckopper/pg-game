@@ -25,7 +25,20 @@ struct Coordinate {
 
 struct Background {
     Coordinate tex_shift;
+
+    GLuint vao;
+    GLuint vbo;
+
+    GLuint u_time_delta;
+
+    GLuint texture;
+
+    std::array<GLfloat, 24> vbo_data;
+
+    GLuint shader_program;
 };
+
+void setup_background(Background& background);
 
 struct Player {
     uint16_t health = UINT16_MAX;
@@ -77,6 +90,7 @@ struct Entities {
     GLuint vbo;
     GLuint ebo;
     GLuint texture;
+    GLuint u_time_delta;
 
     std::array<GLfloat,  (MAX_ENEMIES + 1) * 24> vbo_data;
     std::array<GLushort, (MAX_ENEMIES + 1) * 6>  ebo_data;
