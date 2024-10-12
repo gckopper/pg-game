@@ -6,10 +6,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <game/render.hpp>
+#include <game/time.hpp>
 #include <game/types.hpp>
 #include <game/sprite.hpp>
 #include <game/state.hpp>
-#include <game/time.hpp>
 #include <game/utils.hpp>
 
 constexpr uint16_t ENEMY_SPEED = 3;
@@ -37,9 +38,8 @@ int main() {
 
     gm::update_vbo(e);
 
-    glUseProgram(e.shader_program);
-    glBindTexture(GL_TEXTURE_2D, e.texture);
-    glBindVertexArray(e.vao);
+    gm::Background bg;
+    gm::setup_background(bg);
 
     int frames = 0;
     int ticks = 0;
@@ -73,9 +73,7 @@ int main() {
             last_tick_time += ratio * gm::TICK_STEP;
         }
 
-        glUniform1f(glGetUniformLocation(e.shader_program, "delta_time"), GLfloat(delta_time.count()) / GLfloat(gm::TICK_STEP.count()));
-        glClear(GL_COLOR_BUFFER_BIT);
-        glDrawElements(GL_TRIANGLES, (1 + e.enemy_count) * 6, GL_UNSIGNED_SHORT, (GLvoid*) 0);
+        gm::render(delta_time.count(), e, bg);
 
         ++frames;
 
