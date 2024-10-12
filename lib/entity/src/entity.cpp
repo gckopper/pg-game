@@ -10,13 +10,13 @@
 #include <game/texture.hpp>
 #include <game/utils.hpp>
 
-void gm::setup_entities(entities& entities) {
+void gm::setup_entities(Entities& entities) {
     entities.shader_program = gm::make_shader_program("entities.vert", "entities.frag");
     entities.texture = gm::load_texture("./assets/atlas.png");
     entities.enemy_count = 0;
 
     // player vbo data
-    player& p = entities.player;
+    Player& p = entities.player;
 
     // vertex positions (tr -> br -> bl -> tl)
     entities.vbo_data[0]  = std::ceil((WORLD_WIDTH  + SPRITE_SIZE) / 2.0f);

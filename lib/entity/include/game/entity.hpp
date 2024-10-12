@@ -10,20 +10,20 @@
 
 namespace gm {
 
-struct coordinate {
+struct Coordinate {
     GLfloat x;
     GLfloat y;
 
-    constexpr coordinate operator+(const coordinate& other) const {
+    constexpr Coordinate operator+(const Coordinate& other) const {
         return { this->x + other.x, this->y + other.y };
     }
 
-    constexpr coordinate& operator+=(const coordinate& other) {
+    constexpr Coordinate& operator+=(const Coordinate& other) {
         return *this = *this + other;
     }
 };
 
-struct player {
+struct Player {
     uint16_t health = UINT16_MAX;
     uint16_t attack = UINT16_MAX;
 
@@ -32,19 +32,19 @@ struct player {
 
     uint8_t attack_cooldown = UINT8_MAX;
 
-    coordinate world_pos = {(WORLD_WIDTH - 12) / 2.0f, (WORLD_HEIGHT - 18) / 2.0f};
+    Coordinate world_pos = {(WORLD_WIDTH - 12) / 2.0f, (WORLD_HEIGHT - 18) / 2.0f};
 
-    const sprite* sprite = &sprites::PLAYER_WALK;
+    const Sprite* sprite = &sprites::PLAYER_WALK;
     uint8_t sprite_tick  = 0;
     bool sprite_flipped  = false;
 };
 
-enum enemy_type {
+enum EnemyType {
     ORC
 };
 
-struct enemy {
-    enemy_type type;
+struct Enemy {
+    EnemyType type;
 
     uint16_t health;
     uint16_t attack;
@@ -52,21 +52,21 @@ struct enemy {
     uint8_t hitbox_width;
     uint8_t hitbox_height;
 
-    coordinate world_pos;
-    coordinate tex_pos;
-    coordinate delta_pos;
+    Coordinate world_pos;
+    Coordinate tex_pos;
+    Coordinate delta_pos;
 
-    const sprite* sprite;
+    const Sprite* sprite;
     uint8_t sprite_tick;
     bool sprite_flipped;
 };
 
 constexpr uint8_t MAX_ENEMIES = 64;
 
-struct entities {
-    player player;
+struct Entities {
+    Player player;
     
-    std::array<enemy, MAX_ENEMIES> enemies;
+    std::array<Enemy, MAX_ENEMIES> enemies;
     uint8_t enemy_count;
 
     GLuint vao;
@@ -80,9 +80,9 @@ struct entities {
     GLuint shader_program;
 };
 
-void setup_entities(entities& entities);
+void setup_entities(Entities& entities);
 
-constexpr enemy make_enemy(enemy_type type, coordinate pos) {
+constexpr Enemy make_enemy(EnemyType type, Coordinate pos) {
     switch (type) {
     case ORC:
         return {
@@ -96,12 +96,11 @@ constexpr enemy make_enemy(enemy_type type, coordinate pos) {
             .delta_pos      = {0.0f, 0.0f},
             .sprite         = &sprites::ORC_WALK,
             .sprite_tick    = 0,
-            .sprite_flipped = false
-        };
+            .sprite_flipped = false };
     }
 }
 
-constexpr const sprite* get_sprite(enemy_type enemy_type, sprite_type sprite_type) {
+constexpr const Sprite* get_sprite(EnemyType enemy_type, SpriteType sprite_type) {
     switch (enemy_type) {
     case ORC:
         switch (sprite_type) {

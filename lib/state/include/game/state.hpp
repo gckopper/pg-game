@@ -4,7 +4,7 @@
 
 namespace gm {
 
-void update_vbo(entities& entities);
+void update_vbo(Entities& entities);
 
 template<class T, class U>
 constexpr bool colliding(T first, U second) {
