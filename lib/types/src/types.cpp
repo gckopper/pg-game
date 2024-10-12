@@ -4,7 +4,7 @@
 
 #include <glad/glad.h>
 
-#include <game/entity.hpp>
+#include <game/types.hpp>
 #include <game/shader.hpp>
 #include <game/sprite.hpp>
 #include <game/texture.hpp>

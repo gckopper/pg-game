@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 
-#include <game/entity.hpp>
+#include <game/types.hpp>
 
 namespace gm {
 
