@@ -23,7 +23,8 @@ void gm::render(uint64_t time_delta, Entities& entities, Background& background)
     glBindVertexArray(entities.vao);
     glUniform1f(entities.u_time_delta, time);
 
-    glDrawElements(GL_TRIANGLES, 6*(1+entities.enemy_count), GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_TRIANGLES, 6*(entities.enemy_count), GL_UNSIGNED_SHORT, reinterpret_cast<const void*>(6*sizeof(GLshort)));
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
