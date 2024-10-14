@@ -41,10 +41,10 @@ int main() {
     gm::Background bg;
     gm::setup_background(bg);
 
+    gm::Input input;
+
     int frames = 0;
     int ticks = 0;
-
-    gm::Input input;
 
     gm::duration delta_time;
     gm::time_point current_time, last_tick_time{gm::get_time()};
@@ -58,12 +58,11 @@ int main() {
         if (delta_time >= gm::TICK_STEP) {
             e.player.sprite_tick = (e.player.sprite_tick + 1) % (e.player.sprite->FRAME_COUNT * gm::SPRITE_STEP);
 
-            gm::move_enemies(e);
-            gm::update_vbo(e);
-
-            input = gm::get_input(e.player.speed);
-
+            input = gm::get_input(3.0f);
             gm::update_background(bg, input);
+
+            gm::move_enemies(e, input.movement);
+            gm::update_vbo(e);
 
             ++ticks;
             

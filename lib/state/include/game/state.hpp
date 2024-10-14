@@ -5,7 +5,7 @@
 
 namespace gm {
 
-void move_enemies(Entities& entities);
+void move_enemies(Entities& entities, Coordinate& player_movement);
 
 void update_vbo(Entities& entities);
 
