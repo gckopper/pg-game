@@ -187,8 +187,7 @@ void gm::player_attack(Entities& entities) {
 
     for (uint8_t i = 0; i < entities.enemy_count; ++i) {
         if (colliding(entities.enemies[i].hitbox, left) || colliding(entities.enemies[i].hitbox, right)) {
-            entities.enemies[i].health -= entities.player.attack;
-            entities.enemies[i].health  = std::min(uint16_t(0), entities.enemies[i].health);
+            entities.enemies[i].health = std::max(0, entities.enemies[i].health - entities.player.attack);
         }
     }
 }
