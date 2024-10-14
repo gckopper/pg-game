@@ -14,7 +14,7 @@ struct Input {
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
-Input get_input(float speed);
+Input get_input(GLfloat speed);
 
 void stop_attack();
 

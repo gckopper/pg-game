@@ -7,6 +7,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <game/input.hpp>
 #include <game/render.hpp>
 #include <game/sprite.hpp>
 #include <game/state.hpp>
@@ -43,6 +44,8 @@ int main() {
     int frames = 0;
     int ticks = 0;
 
+    gm::Input input;
+
     gm::duration delta_time;
     gm::time_point current_time, last_tick_time{gm::get_time()};
 
@@ -57,6 +60,10 @@ int main() {
 
             gm::move_enemies(e);
             gm::update_vbo(e);
+
+            input = gm::get_input(e.player.speed);
+
+            gm::update_background(bg, input);
 
             ++ticks;
             
