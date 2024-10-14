@@ -58,7 +58,8 @@ int main() {
         if (delta_time >= gm::TICK_STEP) {
             e.player.sprite_tick = (e.player.sprite_tick + 1) % (e.player.sprite->FRAME_COUNT * gm::SPRITE_STEP);
 
-            input = gm::get_input(3.0f);
+            input = gm::get_input(e.player);
+
             gm::update_background(bg, input);
 
             gm::move_enemies(e, input.movement);

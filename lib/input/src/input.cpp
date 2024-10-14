@@ -25,34 +25,31 @@ void gm::key_callback(GLFWwindow *window, int key, int scancode, int action, int
         input.movement.x -= 1.0 * press;
         break;
     case GLFW_KEY_SPACE:
-        if (action == GLFW_PRESS)
-            input.attack = true;
+        input.attack = action == GLFW_PRESS;
         break;
     }
 }
 
-gm::Input gm::get_input(GLfloat speed) {
+gm::Input gm::get_input(Player& player) {
     gm::Input result = input;
 
     result.movement.x = std::clamp(result.movement.x, -1.0f, 1.0f);
     result.movement.y = std::clamp(result.movement.y, -1.0f, 1.0f);
 
-    if (std::abs(result.movement.x) < 0.1) {
-        result.movement.x = 0.f;
+    if (std::abs(result.movement.x) < 0.1f) {
+        result.movement.x = 0.0f;
     }
-    if (std::abs(result.movement.y) < 0.1) {
-        result.movement.y = 0.f;
+    if (std::abs(result.movement.y) < 0.1f) {
+        result.movement.y = 0.0f;
     }
 
     if (result.movement.x != 0.0f && result.movement.y != 0.0f) {
-        result.movement.x *= 0.7071067811865476;
-        result.movement.y *= 0.7071067811865476;
+        result.movement.x *= 0.7071067811865476f;
+        result.movement.y *= 0.7071067811865476f;
     }
 
-    result.movement.x *= speed;
-    result.movement.y *= speed;
+    result.movement.x *= player.speed;
+    result.movement.y *= player.speed;
 
     return result;
 }
-
-void gm::stop_attack() { input.attack = false; }
