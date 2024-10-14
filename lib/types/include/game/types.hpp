@@ -75,7 +75,7 @@ struct Hitbox {
 };
 
 struct Player {
-    uint16_t health = UINT16_MAX;
+    int16_t health  = INT16_MAX;
     uint16_t attack = UINT16_MAX;
     GLfloat speed = 3.0f;
 
@@ -99,7 +99,7 @@ enum EnemyType {
 struct Enemy {
     EnemyType type;
 
-    uint16_t health;
+    int16_t health;
     uint16_t attack;
 
     GLfloat speed;
@@ -141,7 +141,7 @@ constexpr Enemy make_enemy(EnemyType type, Coordinate pos) {
     case ORC:
         return {
             .type           = type,
-            .health         = UINT16_MAX,
+            .health         = INT16_MAX,
             .attack         = UINT16_MAX,
             .speed          = 1.5f,
             .hitbox         = {
