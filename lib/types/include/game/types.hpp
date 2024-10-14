@@ -67,6 +67,7 @@ void setup_background(Background& background);
 struct Player {
     uint16_t health = UINT16_MAX;
     uint16_t attack = UINT16_MAX;
+    float speed = 0.03f;
 
     GLfloat speed = 3.0f;
 
