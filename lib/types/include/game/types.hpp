@@ -67,18 +67,25 @@ struct Background {
 
 void setup_background(Background& background);
 
+struct Hitbox {
+    Coordinate pos;
+
+    uint8_t width;
+    uint8_t height;
+};
+
 struct Player {
     uint16_t health = UINT16_MAX;
     uint16_t attack = UINT16_MAX;
-
     GLfloat speed = 3.0f;
 
-    uint8_t hitbox_width  = 12;
-    uint8_t hitbox_height = 18;
+    Hitbox hitbox = {
+        .pos    = {(WORLD_WIDTH - 12) / 2.0f, (WORLD_HEIGHT - 18) / 2.0f},
+        .width  = 12,
+        .height = 18
+    };
 
     uint8_t attack_cooldown = UINT8_MAX;
-
-    Coordinate world_pos = {(WORLD_WIDTH - 12) / 2.0f, (WORLD_HEIGHT - 18) / 2.0f};
 
     const Sprite* sprite = &sprites::PLAYER_WALK;
     uint8_t sprite_tick  = 0;
@@ -97,10 +104,8 @@ struct Enemy {
 
     GLfloat speed;
 
-    uint8_t hitbox_width;
-    uint8_t hitbox_height;
+    Hitbox hitbox;
 
-    Coordinate world_pos;
     Coordinate tex_pos;
     Coordinate delta_pos;
 
@@ -139,9 +144,11 @@ constexpr Enemy make_enemy(EnemyType type, Coordinate pos) {
             .health         = UINT16_MAX,
             .attack         = UINT16_MAX,
             .speed          = 1.5f,
-            .hitbox_width   = 13,
-            .hitbox_height  = 16,
-            .world_pos      = pos,
+            .hitbox         = {
+                .pos    = pos,
+                .width  = 13,
+                .height = 16
+            },
             .tex_pos        = {pos.x - (SPRITE_SIZE - 13) / 2.0f, pos.y - (SPRITE_SIZE - 16) / 2.0f},
             .delta_pos      = {0.0f, 0.0f},
             .sprite         = &sprites::ORC_WALK,

@@ -28,9 +28,9 @@ int main() {
 
     for (int i = 0; i < gm::MAX_ENEMIES; ++i) {
         e.enemies[i] = gm::make_enemy(gm::ORC, {0.0f, 0.0f});
-        e.enemies[i].world_pos.x += x_distrib(gen);
-        e.enemies[i].world_pos.y += y_distrib(gen);
-        e.enemies[i].tex_pos += e.enemies[i].world_pos;
+        e.enemies[i].hitbox.pos.x += x_distrib(gen);
+        e.enemies[i].hitbox.pos.y += y_distrib(gen);
+        e.enemies[i].tex_pos += e.enemies[i].hitbox.pos;
     }
     e.enemy_count = gm::MAX_ENEMIES;
 
