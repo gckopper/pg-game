@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <game/input.hpp>
 #include <game/log.hpp>
 #include <game/utils.hpp>
 
@@ -18,6 +19,8 @@ GLFWwindow* gm::init_context(int width, int height, std::string title) {
 	glfwMakeContextCurrent(window);
 
     glfwSetFramebufferSizeCallback(window, glfw_framebuffer_size_callback);
+
+    glfwSetKeyCallback(window, &key_callback);
 
     if (gladLoadGLLoader((GLADloadproc) glfwGetProcAddress) == 0) {
         LOG("Failed to initialize OpenGL context");

@@ -10,6 +10,8 @@ add_subdirectory("time")
 
 add_subdirectory("utils")
 
+add_subdirectory("input")
+
 add_subdirectory("texture")
 
 add_subdirectory("state")

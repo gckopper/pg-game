@@ -43,6 +43,7 @@ void setup_background(Background& background);
 struct Player {
     uint16_t health = UINT16_MAX;
     uint16_t attack = UINT16_MAX;
+    float speed = 0.03f;
 
     uint8_t hitbox_width  = 12;
     uint8_t hitbox_height = 18;

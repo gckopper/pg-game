@@ -77,3 +77,25 @@ void gm::update_vbo(Entities& entities) {
     glBufferSubData(GL_ARRAY_BUFFER, 0, (entities.enemy_count + 1) * 24 * sizeof(GLfloat), entities.vbo_data.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+void gm::update_background(Background& background, Input& input) {
+        background.vbo_data[2] = input.movement.x;
+        background.vbo_data[3] = input.movement.y;
+        background.vbo_data[8] = input.movement.x;
+        background.vbo_data[9] = input.movement.y;
+        background.vbo_data[14] = input.movement.x;
+        background.vbo_data[15] = input.movement.y;
+        background.vbo_data[20] = input.movement.x;
+        background.vbo_data[21] = input.movement.y;
+        glBindBuffer(GL_ARRAY_BUFFER, background.vbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, background.vbo_data.size() * sizeof(GLfloat), background.vbo_data.data());
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        background.vbo_data[4] += input.movement.x;
+        background.vbo_data[5] += input.movement.y;
+        background.vbo_data[10] += input.movement.x;
+        background.vbo_data[11] += input.movement.y;
+        background.vbo_data[16] += input.movement.x;
+        background.vbo_data[17] += input.movement.y;
+        background.vbo_data[22] += input.movement.x;
+        background.vbo_data[23] += input.movement.y;
+}
