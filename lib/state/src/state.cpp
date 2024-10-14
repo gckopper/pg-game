@@ -170,23 +170,26 @@ void gm::update_vbo(Entities& entities) {
 }
 
 void gm::update_background(Background& background, Input& input) {
-        background.vbo_data[2] = input.movement.x;
-        background.vbo_data[3] = input.movement.y;
-        background.vbo_data[8] = input.movement.x;
-        background.vbo_data[9] = input.movement.y;
-        background.vbo_data[14] = input.movement.x;
-        background.vbo_data[15] = input.movement.y;
-        background.vbo_data[20] = input.movement.x;
-        background.vbo_data[21] = input.movement.y;
-        glBindBuffer(GL_ARRAY_BUFFER, background.vbo);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, background.vbo_data.size() * sizeof(GLfloat), background.vbo_data.data());
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        background.vbo_data[4] += input.movement.x;
-        background.vbo_data[5] += input.movement.y;
-        background.vbo_data[10] += input.movement.x;
-        background.vbo_data[11] += input.movement.y;
-        background.vbo_data[16] += input.movement.x;
-        background.vbo_data[17] += input.movement.y;
-        background.vbo_data[22] += input.movement.x;
-        background.vbo_data[23] += input.movement.y;
+    Coordinate normalized;
+    normalized.x = input.movement.x / background.texture_width;
+    normalized.y = input.movement.y / background.texture_height;
+    background.vbo_data[2] = normalized.x;
+    background.vbo_data[3] = normalized.y;
+    background.vbo_data[8] = normalized.x;
+    background.vbo_data[9] = normalized.y;
+    background.vbo_data[14] = normalized.x;
+    background.vbo_data[15] = normalized.y;
+    background.vbo_data[20] = normalized.x;
+    background.vbo_data[21] = normalized.y;
+    glBindBuffer(GL_ARRAY_BUFFER, background.vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, background.vbo_data.size() * sizeof(GLfloat), background.vbo_data.data());
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    background.vbo_data[4] += normalized.x;
+    background.vbo_data[5] += normalized.y;
+    background.vbo_data[10] += normalized.x;
+    background.vbo_data[11] += normalized.y;
+    background.vbo_data[16] += normalized.x;
+    background.vbo_data[17] += normalized.y;
+    background.vbo_data[22] += normalized.x;
+    background.vbo_data[23] += normalized.y;
 }
