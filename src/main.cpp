@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cstdint>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
@@ -31,6 +32,7 @@ int main() {
         e.enemies[i].hitbox.pos.x += x_distrib(gen);
         e.enemies[i].hitbox.pos.y += y_distrib(gen);
         e.enemies[i].tex_pos += e.enemies[i].hitbox.pos;
+        e.enemies[i].sprite_tick = int(x_distrib(gen)) % (e.enemies[i].sprite->FRAME_COUNT * gm::SPRITE_STEP);
     }
     e.enemy_count = gm::MAX_ENEMIES;
 
@@ -57,10 +59,18 @@ int main() {
             input = gm::get_input(e.player);
 
             gm::update_sprites(e, input);
-
             gm::update_background(bg, input);
 
+            gm::player_attack(e);
+            for (uint8_t i = 0; i < e.enemy_count; ++i) {
+                if (e.enemies[i].health < gm::make_enemy(e.enemies[i].type, {}).health) {
+                    e.enemies[i].hitbox.pos += {10000.0f, 100.0f};
+                    e.enemies[i].tex_pos    += {10000.0f, 100.0f};
+                }
+            }
+
             gm::move_enemies(e, input.movement);
+
             gm::update_vbo(e);
 
             ++ticks;

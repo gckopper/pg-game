@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <cstdint>
 #include <span>
 
@@ -168,6 +169,28 @@ void gm::update_vbo(Entities& entities) {
     glBindBuffer(GL_ARRAY_BUFFER, entities.vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, (entities.enemy_count + 1) * 24 * sizeof(GLfloat), entities.vbo_data.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void gm::player_attack(Entities& entities) {
+    if (entities.player.sprite != &sprites::PLAYER_ATTACK || entities.player.sprite_tick / SPRITE_STEP < 3) return;
+
+    Hitbox left  = {.pos = {0.0f, std::ceil((WORLD_HEIGHT - SPRITE_SIZE) / 2.0f) + 7}, .width = 20, .height = 13};
+    Hitbox right = {.pos = {0.0f, std::ceil((WORLD_HEIGHT - SPRITE_SIZE) / 2.0f) + 7}, .width = 20, .height = 25};
+
+    if (entities.player.sprite_flipped) {
+        left.pos.x =  std::ceil((WORLD_WIDTH  - SPRITE_SIZE) / 2.0f) + 18;
+        right.pos.x = std::ceil((WORLD_WIDTH  - SPRITE_SIZE) / 2.0f) - 2;
+    } else {
+        left.pos.x  = std::ceil((WORLD_WIDTH  - SPRITE_SIZE) / 2.0f) + 3;
+        right.pos.x = std::ceil((WORLD_WIDTH  - SPRITE_SIZE) / 2.0f) + 23;
+    }
+
+    for (uint8_t i = 0; i < entities.enemy_count; ++i) {
+        if (colliding(entities.enemies[i].hitbox, left) || colliding(entities.enemies[i].hitbox, right)) {
+            entities.enemies[i].health -= entities.player.attack;
+            entities.enemies[i].health  = std::min(uint16_t(0), entities.enemies[i].health);
+        }
+    }
 }
 
 void gm::update_background(Background& background, Input& input) {
