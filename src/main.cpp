@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <random>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -19,10 +20,15 @@ int main() {
     gm::Entities e;
     gm::setup_entities(e);
 
+    std::random_device rd;
+    std::mt19937 gen = std::mt19937(rd());
+    std::uniform_real_distribution<> x_distrib(0, gm::WORLD_WIDTH);
+    std::uniform_real_distribution<> y_distrib(0, gm::WORLD_HEIGHT);
+
     for (int i = 0; i < gm::MAX_ENEMIES; ++i) {
         e.enemies[i] = gm::make_enemy(gm::ORC, {0.0f, 0.0f});
-        e.enemies[i].world_pos.x += (rand() % (int)(gm::WORLD_WIDTH));
-        e.enemies[i].world_pos.y += (rand() % (int)(gm::WORLD_HEIGHT));
+        e.enemies[i].world_pos.x += x_distrib(gen);
+        e.enemies[i].world_pos.y += y_distrib(gen);
         e.enemies[i].tex_pos += e.enemies[i].world_pos;
     }
     e.enemy_count = gm::MAX_ENEMIES;
