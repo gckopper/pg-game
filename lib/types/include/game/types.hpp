@@ -57,6 +57,9 @@ struct Background {
 
     GLuint texture;
 
+    GLfloat texture_width = 100.0f;
+    GLfloat texture_height = 100.0f;
+
     std::array<GLfloat, 24> vbo_data;
 
     GLuint shader_program;
@@ -67,7 +70,6 @@ void setup_background(Background& background);
 struct Player {
     uint16_t health = UINT16_MAX;
     uint16_t attack = UINT16_MAX;
-    float speed = 0.03f;
 
     GLfloat speed = 3.0f;
 

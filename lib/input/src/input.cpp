@@ -31,7 +31,7 @@ void gm::key_callback(GLFWwindow *window, int key, int scancode, int action, int
     }
 }
 
-gm::Input gm::get_input(float speed) {
+gm::Input gm::get_input(GLfloat speed) {
     gm::Input result = input;
 
     result.movement.x = std::clamp(result.movement.x, -1.0f, 1.0f);
