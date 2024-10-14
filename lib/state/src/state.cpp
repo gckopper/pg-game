@@ -46,7 +46,7 @@ void gm::move_enemies(Entities &entities) {
         Coordinate delta = p.world_pos - e.world_pos;
         GLfloat inv_hip = quake_rsqrt(delta.x * delta.x + delta.y * delta.y);
 
-        GLfloat dist = std::min(e.speed, 1.0f / quake_rsqrt(delta.x * delta.x + delta.y * delta.y));
+        GLfloat dist = std::min(e.speed, 1.0f / inv_hip);
 
         delta = {dist * inv_hip * delta.x, dist * inv_hip * delta.y};
         e.world_pos += delta;
@@ -90,8 +90,11 @@ void gm::move_enemies(Entities &entities) {
             e.world_pos += delta;
         }
 
-        e.world_pos -= delta;
         e.delta_pos = delta;
+    }
+
+    for (uint8_t i = 0; i < entities.enemy_count; ++i) {
+        entities.enemies[i].world_pos -= entities.enemies[i].delta_pos;
     }
 }
 
