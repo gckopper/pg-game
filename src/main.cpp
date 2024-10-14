@@ -34,8 +34,6 @@ int main() {
     }
     e.enemy_count = gm::MAX_ENEMIES;
 
-    e.player.sprite = &gm::sprites::PLAYER_ATTACK;
-
     gm::update_vbo(e);
 
     gm::Background bg;
@@ -56,9 +54,9 @@ int main() {
         delta_time = current_time - last_tick_time;
 
         if (delta_time >= gm::TICK_STEP) {
-            e.player.sprite_tick = (e.player.sprite_tick + 1) % (e.player.sprite->FRAME_COUNT * gm::SPRITE_STEP);
-
             input = gm::get_input(e.player);
+
+            gm::update_sprites(e, input);
 
             gm::update_background(bg, input);
 
@@ -83,8 +81,6 @@ int main() {
             ticks = 0;
             frames = 0;
             prev = current_time;
-
-            e.player.sprite_flipped = !e.player.sprite_flipped;
         }
 
         glfwSwapBuffers(window);

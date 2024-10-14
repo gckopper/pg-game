@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstdint>
+#include <iostream>
 #include <span>
 
 #include <glad/glad.h>
@@ -184,5 +185,39 @@ void gm::update_background(Background& background, Input& input) {
     for (uint8_t i = 0; i < 24; i+=6) {
         background.vbo_data[4+i] += normalized.x;
         background.vbo_data[5+i] += normalized.y;
+    }
+}
+
+void gm::update_sprites(Entities& entities, Input& input) {
+    Player& p = entities.player;
+    std::span<Enemy> enemies = entities.enemies;
+
+    for (Enemy& e : enemies.subspan(0, entities.enemy_count)) {
+        e.sprite_tick = (e.sprite_tick + 1) % (e.sprite->FRAME_COUNT * gm::SPRITE_STEP);
+        e.sprite_flipped = e.hitbox.pos.x > entities.player.hitbox.pos.x;
+    }
+
+    if ((p.sprite_tick + 1) == (p.sprite->FRAME_COUNT * gm::SPRITE_STEP)) {
+        p.attacking = false;
+    }
+    p.sprite_tick = (p.sprite_tick + 1) % (p.sprite->FRAME_COUNT * gm::SPRITE_STEP);
+
+    if (p.attacking) {
+        input.movement.x = 0.f;
+        input.movement.y = 0.f;
+    } else {
+        p.sprite_flipped = input.movement.x < 0.f;
+        if (!input.attack && p.sprite == &gm::sprites::PLAYER_ATTACK) {
+            entities.player.sprite = &gm::sprites::PLAYER_WALK;
+            entities.player.sprite_tick = 0;
+        } 
+        if (input.movement.x == 0.0f && input.movement.y == 0.0f) {
+            p.sprite_tick = 0;
+        } 
+        if (input.attack) {
+            p.sprite = &gm::sprites::PLAYER_ATTACK;
+            p.sprite_tick = 0;
+            p.attacking = true;
+        } 
     }
 }

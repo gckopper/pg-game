@@ -11,6 +11,8 @@ void update_vbo(Entities& entities);
 
 void update_background(Background& background, Input& input);
 
+void update_sprites(Entities& entities, Input& input);
+
 constexpr bool colliding(Hitbox& lhs, Hitbox& rhs) {
     return lhs.pos.x < rhs.pos.x  + rhs.width  &&
            lhs.pos.x + lhs.width  > rhs.pos.x  &&
