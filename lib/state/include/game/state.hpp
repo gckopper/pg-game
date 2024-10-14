@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 
+#include <game/input.hpp>
 #include <game/types.hpp>
 
 namespace gm {
@@ -7,6 +8,8 @@ namespace gm {
 void move_enemies(Entities& entities);
 
 void update_vbo(Entities& entities);
+
+void update_background(Background& background, Input& input);
 
 template<class T, class U>
 constexpr bool colliding(T first, U second) {
