@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <cstdint>
-#include <iostream>
 #include <span>
 
 #include <glad/glad.h>
@@ -206,14 +205,15 @@ void gm::update_sprites(Entities& entities, Input& input) {
         input.movement.x = 0.f;
         input.movement.y = 0.f;
     } else {
-        p.sprite_flipped = input.movement.x < 0.f;
         if (!input.attack && p.sprite == &gm::sprites::PLAYER_ATTACK) {
             entities.player.sprite = &gm::sprites::PLAYER_WALK;
             entities.player.sprite_tick = 0;
         } 
         if (input.movement.x == 0.0f && input.movement.y == 0.0f) {
             p.sprite_tick = 0;
-        } 
+        } else {
+            p.sprite_flipped = input.movement.x < 0.f;
+        }
         if (input.attack) {
             p.sprite = &gm::sprites::PLAYER_ATTACK;
             p.sprite_tick = 0;
