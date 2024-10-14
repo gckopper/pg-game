@@ -9,7 +9,7 @@
 #include <game/types.hpp>
 #include <game/utils.hpp>
 
-void gm::move_enemies(Entities &entities) {
+void gm::move_enemies(Entities &entities, Coordinate& player_movement) {
     // update movement from last tick
     for (uint8_t i = 0; i < entities.enemy_count; ++i) {
         entities.enemies[i].world_pos += entities.enemies[i].delta_pos;
@@ -49,6 +49,7 @@ void gm::move_enemies(Entities &entities) {
         GLfloat dist = std::min(e.speed, 1.0f / inv_hip);
 
         delta = {dist * inv_hip * delta.x, dist * inv_hip * delta.y};
+        delta -= player_movement;
         e.world_pos += delta;
 
         // collision
