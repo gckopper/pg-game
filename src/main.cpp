@@ -1,5 +1,5 @@
 #include <chrono>
-#include <cstdint>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 
@@ -7,18 +7,11 @@
 #include <GLFW/glfw3.h>
 
 #include <game/render.hpp>
-#include <game/time.hpp>
-#include <game/types.hpp>
 #include <game/sprite.hpp>
 #include <game/state.hpp>
+#include <game/time.hpp>
+#include <game/types.hpp>
 #include <game/utils.hpp>
-
-constexpr uint16_t ENEMY_SPEED = 3;
-
-void update_pos(gm::Enemy& e) {
-    e.world_pos.x = uint16_t(e.world_pos.x + e.delta_pos.x) % uint16_t(gm::WORLD_WIDTH);
-    e.tex_pos.x = uint16_t(e.tex_pos.x + e.delta_pos.x) % uint16_t(gm::WORLD_WIDTH);
-}
 
 int main() {
     GLFWwindow* window = gm::init_context(gm::WINDOW_WIDTH, gm::WINDOW_HEIGHT, "PG Game");
@@ -26,13 +19,13 @@ int main() {
     gm::Entities e;
     gm::setup_entities(e);
 
-    e.enemies[0] = gm::make_enemy(gm::ORC, {100.0f, 180.0f});
-    e.enemies[0].delta_pos = {ENEMY_SPEED, 0.0f};
-
-    e.enemies[1] = gm::make_enemy(gm::ORC, {200.0f, 100.0f});
-    e.enemies[1].sprite = gm::get_sprite(e.enemies[1].type, gm::DEATH);
-
-    e.enemy_count = 2;
+    for (int i = 0; i < gm::MAX_ENEMIES; ++i) {
+        e.enemies[i] = gm::make_enemy(gm::ORC, {0.0f, 0.0f});
+        e.enemies[i].world_pos.x += (rand() % (int)(gm::WORLD_WIDTH));
+        e.enemies[i].world_pos.y += (rand() % (int)(gm::WORLD_HEIGHT));
+        e.enemies[i].tex_pos += e.enemies[i].world_pos;
+    }
+    e.enemy_count = gm::MAX_ENEMIES;
 
     e.player.sprite = &gm::sprites::PLAYER_ATTACK;
 
@@ -54,17 +47,10 @@ int main() {
         delta_time = current_time - last_tick_time;
 
         if (delta_time >= gm::TICK_STEP) {
-            e.enemies[0].sprite_tick = (e.enemies[0].sprite_tick + 1) % (e.enemies[0].sprite->FRAME_COUNT * gm::SPRITE_STEP);
-            update_pos(e.enemies[0]);
-
-            e.enemies[1].sprite_tick = (e.enemies[1].sprite_tick + 1) % (e.enemies[1].sprite->FRAME_COUNT * gm::SPRITE_STEP);
             e.player.sprite_tick = (e.player.sprite_tick + 1) % (e.player.sprite->FRAME_COUNT * gm::SPRITE_STEP);
 
+            gm::move_enemies(e);
             gm::update_vbo(e);
-
-            if (gm::colliding(e.player, e.enemies[0])) {
-                std::cout << "collision!" << std::endl;
-            }
 
             ++ticks;
             

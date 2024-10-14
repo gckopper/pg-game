@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <cstdlib>
 
 #include <glad/glad.h>
@@ -53,4 +54,18 @@ void gm::glfw_framebuffer_size_callback(GLFWwindow* window, int width, int heigh
     int new_height = WORLD_HEIGHT * scale;
     
     glViewport((width - new_width) / 2, (height - new_height) / 2, new_width, new_height);
+}
+
+GLfloat gm::quake_rsqrt(GLfloat num) {
+    int32_t i;
+    GLfloat x2, y;
+
+    x2 = num * 0.5f;
+    y = num;
+    i = *(int32_t*) &y;            // evil floating point bit level hacking
+    i = 0x5f3759df - (i >> 1);     // what the fuck?
+    y = *(GLfloat*) &i;
+    y = y * (1.5f - (x2 * y * y)); // 1st iteration
+
+    return y;
 }

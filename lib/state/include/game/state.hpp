@@ -4,6 +4,8 @@
 
 namespace gm {
 
+void move_enemies(Entities& entities);
+
 void update_vbo(Entities& entities);
 
 template<class T, class U>
