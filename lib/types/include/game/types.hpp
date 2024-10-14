@@ -21,6 +21,30 @@ struct Coordinate {
     constexpr Coordinate& operator+=(const Coordinate& other) {
         return *this = *this + other;
     }
+
+    constexpr Coordinate operator-(const Coordinate& other) const {
+        return { this->x - other.x, this->y - other.y };
+    }
+
+    constexpr Coordinate& operator-=(const Coordinate& other) {
+        return *this = *this - other;
+    }
+
+    constexpr Coordinate operator-() const {
+        return { -this->x, -this->y };
+    }
+
+    constexpr Coordinate operator*(const Coordinate& other) const {
+        return { this->x * other.x, this->y * other.y };
+    }
+
+    constexpr Coordinate& operator*=(const Coordinate& other) {
+        return *this = *this * other;
+    }
+
+    constexpr bool operator==(const Coordinate& other) const {
+        return this->x == other.x && this->y == other.y;
+    }
 };
 
 struct Background {
@@ -44,6 +68,8 @@ struct Player {
     uint16_t health = UINT16_MAX;
     uint16_t attack = UINT16_MAX;
 
+    GLfloat speed = 3.0f;
+
     uint8_t hitbox_width  = 12;
     uint8_t hitbox_height = 18;
 
@@ -65,6 +91,8 @@ struct Enemy {
 
     uint16_t health;
     uint16_t attack;
+
+    GLfloat speed;
 
     uint8_t hitbox_width;
     uint8_t hitbox_height;
@@ -107,6 +135,7 @@ constexpr Enemy make_enemy(EnemyType type, Coordinate pos) {
             .type           = type,
             .health         = UINT16_MAX,
             .attack         = UINT16_MAX,
+            .speed          = 1.5f,
             .hitbox_width   = 13,
             .hitbox_height  = 16,
             .world_pos      = pos,
