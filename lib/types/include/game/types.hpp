@@ -85,7 +85,7 @@ struct Player {
         .height = 18
     };
 
-    uint8_t attack_cooldown = UINT8_MAX;
+    bool attacking = false;
 
     const Sprite* sprite = &sprites::PLAYER_WALK;
     uint8_t sprite_tick  = 0;

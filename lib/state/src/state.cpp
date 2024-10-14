@@ -174,23 +174,15 @@ void gm::update_background(Background& background, Input& input) {
     Coordinate normalized;
     normalized.x = input.movement.x / background.texture_width;
     normalized.y = input.movement.y / background.texture_height;
-    background.vbo_data[2] = normalized.x;
-    background.vbo_data[3] = normalized.y;
-    background.vbo_data[8] = normalized.x;
-    background.vbo_data[9] = normalized.y;
-    background.vbo_data[14] = normalized.x;
-    background.vbo_data[15] = normalized.y;
-    background.vbo_data[20] = normalized.x;
-    background.vbo_data[21] = normalized.y;
+    for (uint8_t i = 0; i < 24; i+=6) {
+        background.vbo_data[2+i] = normalized.x;
+        background.vbo_data[3+i] = normalized.y;
+    }
     glBindBuffer(GL_ARRAY_BUFFER, background.vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, background.vbo_data.size() * sizeof(GLfloat), background.vbo_data.data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    background.vbo_data[4] += normalized.x;
-    background.vbo_data[5] += normalized.y;
-    background.vbo_data[10] += normalized.x;
-    background.vbo_data[11] += normalized.y;
-    background.vbo_data[16] += normalized.x;
-    background.vbo_data[17] += normalized.y;
-    background.vbo_data[22] += normalized.x;
-    background.vbo_data[23] += normalized.y;
+    for (uint8_t i = 0; i < 24; i+=6) {
+        background.vbo_data[4+i] += normalized.x;
+        background.vbo_data[5+i] += normalized.y;
+    }
 }
