@@ -3,6 +3,10 @@
 #include <game/utils.hpp>
 
 GLuint gm::load_texture(std::string path) {
+    return load_texture(path, nullptr, nullptr);
+}
+
+GLuint gm::load_texture(std::string path, int* result_width, int* result_height) {
     stbi_set_flip_vertically_on_load(1);
     
     int height, width, n;
@@ -26,5 +30,14 @@ GLuint gm::load_texture(std::string path) {
     glBindTexture(GL_TEXTURE_2D, 0);
 
     stbi_image_free(data);
+
+    if (result_width != nullptr) {
+        *result_width = width;
+    }
+
+    if (result_height != nullptr) {
+        *result_height = height;
+    }
+
     return texture;
 }
