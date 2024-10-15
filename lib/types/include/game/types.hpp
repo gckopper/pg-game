@@ -171,6 +171,8 @@ constexpr Enemy make_enemy(EnemyType type, Coordinate pos) {
             .sprite_tick    = 0,
             .sprite_flipped = false };
     }
+
+    return {};
 }
 
 constexpr const Sprite* get_sprite(EnemyType enemy_type, SpriteType sprite_type) {

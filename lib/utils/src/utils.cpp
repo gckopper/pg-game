@@ -44,7 +44,7 @@ void gm::terminate() {
 }
 
 void gm::glfw_error_callback(int code, const char* desc) {
-    LOG("GLFW encountered an error:" << code);
+    LOG("GLFW encountered an error: " << code);
     LOG(desc);
 
     terminate();
