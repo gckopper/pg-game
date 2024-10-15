@@ -9,11 +9,16 @@ namespace gm {
 constexpr GLfloat SPAWN_OFFSET_X = 0.05f * WORLD_WIDTH;
 constexpr GLfloat SPAWN_OFFSET_Y = 0.05f * WORLD_HEIGHT;
 
+constexpr GLfloat DESPAWN_DISTANCE_X = 0.75f * WORLD_WIDTH;
+constexpr GLfloat DESPAWN_DISTANCE_Y = 0.75f * WORLD_HEIGHT;
+
 void move_enemies(Entities& entities, Coordinate& player_movement);
 
 void update_vbo(Entities& entities);
 
 void player_attack(Entities& entities);
+
+void enemy_attack(Entities& entities);
 
 void update_background(Background& background, Input& input);
 
