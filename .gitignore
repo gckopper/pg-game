@@ -1,8 +1,5 @@
 # cmake
 build*
+install
 # clangd
 .cache
-# temp
-assets
-*.dll
-*.so
