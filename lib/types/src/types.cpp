@@ -90,7 +90,12 @@ void gm::setup_background(Background& background) {
     // set the shader sampler to always use the first texture unit
     glUniform1i(glGetUniformLocation(background.shader_program, "texture_uniform"), 0);
 
-    background.texture = gm::load_texture("./assets/background.png");
+    int width, height;
+    background.texture = gm::load_texture("./assets/background.png", &width, &height);
+    
+    background.texture_width  = width;
+    background.texture_height = height;
+
     background.vbo_data = {
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,                                   0.0f,                                     // bottom left
             -1.0f,  1.0f, 0.0f, 0.0f, 0.0f,                                   WORLD_HEIGHT / background.texture_height, // top left
@@ -107,7 +112,7 @@ void gm::setup_background(Background& background) {
     GLuint ebo;
     glGenBuffers(1, &background.vbo);
     glBindBuffer(GL_ARRAY_BUFFER, background.vbo);
-    glBufferData(GL_ARRAY_BUFFER, background.vbo_data.size() * sizeof(GLfloat), background.vbo_data.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, background.vbo_data.size() * sizeof(GLfloat), background.vbo_data.data(), GL_DYNAMIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) 0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*) (2 * sizeof(GLfloat)));
