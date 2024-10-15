@@ -15,6 +15,9 @@ GLuint gm::load_texture(std::string path, int* result_width, int* result_height)
         LOG("Failed to load texture " << path);
         terminate();
     }
+
+    glActiveTexture(GL_TEXTURE0);
+
     GLuint texture;
     glGenTextures(1, &texture);
     
