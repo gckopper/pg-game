@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <game/input.hpp>
 
 static gm::Input input;
@@ -26,6 +28,9 @@ void gm::key_callback(GLFWwindow *window, int key, int scancode, int action, int
         break;
     case GLFW_KEY_SPACE:
         input.attack = action == GLFW_PRESS;
+        break;
+    case GLFW_KEY_ESCAPE:
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
         break;
     }
 }
