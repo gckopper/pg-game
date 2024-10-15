@@ -92,10 +92,10 @@ void gm::setup_background(Background& background) {
 
     background.texture = gm::load_texture("./assets/background.png");
     background.vbo_data = {
-            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,   // bottom left
-            -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 3.6f,   // top left
-             1.0f,  1.0f, 0.0f, 0.0f, 6.4f, 3.6f,   // top right
-             1.0f, -1.0f, 0.0f, 0.0f, 6.4f, 0.0f,   // bottom right
+            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,                                   0.0f,                                     // bottom left
+            -1.0f,  1.0f, 0.0f, 0.0f, 0.0f,                                   WORLD_HEIGHT / background.texture_height, // top left
+             1.0f,  1.0f, 0.0f, 0.0f, WORLD_WIDTH / background.texture_width, WORLD_HEIGHT / background.texture_height, // top right
+             1.0f, -1.0f, 0.0f, 0.0f, WORLD_WIDTH / background.texture_width, 0.0f,                                     // bottom right
     }; 
     constexpr std::array<GLushort, 6> ebo_data = {
         0, 1, 2, 0, 2, 3

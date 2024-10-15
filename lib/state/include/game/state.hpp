@@ -2,8 +2,12 @@
 
 #include <game/input.hpp>
 #include <game/types.hpp>
+#include <random>
 
 namespace gm {
+
+constexpr GLfloat SPAWN_OFFSET_X = 0.05f * WORLD_WIDTH;
+constexpr GLfloat SPAWN_OFFSET_Y = 0.05f * WORLD_HEIGHT;
 
 void move_enemies(Entities& entities, Coordinate& player_movement);
 
@@ -12,6 +16,8 @@ void update_vbo(Entities& entities);
 void player_attack(Entities& entities);
 
 void update_background(Background& background, Input& input);
+
+void spawn_enemy(Entities& entities, std::mt19937& gen);
 
 void update_sprites(Entities& entities, Input& input);
 

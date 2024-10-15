@@ -209,6 +209,36 @@ void gm::update_background(Background& background, Input& input) {
     }
 }
 
+void gm::spawn_enemy(Entities& entities, std::mt19937& gen) {
+    if (entities.enemy_count >= MAX_ENEMIES) return;
+
+    std::uniform_int_distribution<> rand_side(0, 3);
+    std::uniform_real_distribution<> rand_x(0, SPAWN_OFFSET_X*2 + gm::WORLD_WIDTH);
+    std::uniform_real_distribution<> rand_y(0, SPAWN_OFFSET_Y*2 + gm::WORLD_HEIGHT);
+    Coordinate pos;
+
+    switch (rand_side(gen)) {
+        case 0:
+            pos.x = rand_x(gen);
+            pos.y = -SPAWN_OFFSET_Y;
+            break;
+        case 1:
+            pos.x = rand_x(gen);
+            pos.y = gm::WORLD_HEIGHT + SPAWN_OFFSET_Y;
+            break;
+        case 2:
+            pos.x = -SPAWN_OFFSET_X;
+            pos.y = rand_y(gen);
+            break;
+        case 3:
+            pos.x = gm::WORLD_WIDTH + SPAWN_OFFSET_X;
+            pos.y = rand_y(gen);
+            break;
+    }
+
+    entities.enemies[entities.enemy_count++] = make_enemy(ORC, pos);
+}
+
 void gm::update_sprites(Entities& entities, Input& input) {
     Player& p = entities.player;
     std::span<Enemy> enemies = entities.enemies;
@@ -231,8 +261,10 @@ void gm::update_sprites(Entities& entities, Input& input) {
             entities.player.sprite = &gm::sprites::PLAYER_WALK;
             entities.player.sprite_tick = 0;
         } 
-        if (input.movement.x == 0.0f && input.movement.y == 0.0f) {
-            p.sprite_tick = 0;
+        if (input.movement.x == 0.0f) {
+            if (input.movement.y == 0.0f) {
+                p.sprite_tick = 0;
+            }
         } else {
             p.sprite_flipped = input.movement.x < 0.f;
         }

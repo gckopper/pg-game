@@ -24,17 +24,7 @@ int main() {
 
     std::random_device rd;
     std::mt19937 gen = std::mt19937(rd());
-    std::uniform_real_distribution<> x_distrib(0, gm::WORLD_WIDTH);
-    std::uniform_real_distribution<> y_distrib(0, gm::WORLD_HEIGHT);
-
-    for (int i = 0; i < gm::MAX_ENEMIES; ++i) {
-        e.enemies[i] = gm::make_enemy(gm::ORC, {0.0f, 0.0f});
-        e.enemies[i].hitbox.pos.x += x_distrib(gen);
-        e.enemies[i].hitbox.pos.y += y_distrib(gen);
-        e.enemies[i].tex_pos += e.enemies[i].hitbox.pos;
-        e.enemies[i].sprite_tick = int(x_distrib(gen)) % (e.enemies[i].sprite->FRAME_COUNT * gm::SPRITE_STEP);
-    }
-    e.enemy_count = gm::MAX_ENEMIES;
+    std::uniform_int_distribution<uint64_t> spawn_distribution(0, 15); 
 
     gm::update_vbo(e);
 
@@ -45,6 +35,7 @@ int main() {
 
     int frames = 0;
     int ticks = 0;
+    uint64_t tick_cout = 0;
 
     gm::duration delta_time;
     gm::time_point current_time, last_tick_time{gm::get_time()};
@@ -57,6 +48,10 @@ int main() {
 
         if (delta_time >= gm::TICK_STEP) {
             input = gm::get_input(e.player);
+
+            if (spawn_distribution(gen) + std::log2(tick_cout) > 15) {
+                gm::spawn_enemy(e, gen);
+            }
 
             gm::update_sprites(e, input);
             gm::update_background(bg, input);
@@ -74,6 +69,7 @@ int main() {
             gm::update_vbo(e);
 
             ++ticks;
+            ++tick_cout;
             
             gm::time_t ratio = delta_time / gm::TICK_STEP;
             delta_time -= ratio * gm::TICK_STEP;
