@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <span>
 
 #include <glad/glad.h>
@@ -31,14 +32,13 @@ void gm::move_enemies(Entities &entities, Coordinate& player_movement) {
     Player& p = entities.player;
 
     // despawn enemies
-    // for (int8_t i = entities.enemy_count - 1; i >= 0; --i) {
-    //     Coordinate dist = entities.enemies[i].hitbox.pos - p.hitbox.pos;
-    //     dist *= dist;
+    for (int8_t i = entities.enemy_count - 1; i >= 0; --i) {
+        Coordinate dist = entities.enemies[i].hitbox.pos - p.hitbox.pos;
 
-    //     if (dist.x + dist.y > DESPAWN_DISTANCE) {
-    //         --entities.enemy_count;
-    //     }
-    // }
+        if (std::abs(dist.x) > DESPAWN_DISTANCE_X || std::abs(dist.y) > DESPAWN_DISTANCE_Y) {
+            --entities.enemy_count;
+        }
+    }
 
     // movement
     for (uint8_t i = 0; i < entities.enemy_count; ++i) {
@@ -190,6 +190,18 @@ void gm::player_attack(Entities& entities) {
             entities.enemies[i].health = std::max(0, entities.enemies[i].health - entities.player.attack);
         }
     }
+}
+
+void gm::enemy_attack(Entities& entities) {
+    int16_t highest_attack = 0;
+
+    for (uint8_t i = 0; i < entities.enemy_count; ++i) {
+        if (!colliding(entities.enemies[i].hitbox, entities.player.hitbox)) continue;
+
+        highest_attack = std::max(highest_attack, entities.enemies[i].attack);
+    }
+
+    entities.player.health -= highest_attack;
 }
 
 void gm::update_background(Background& background, Input& input) {

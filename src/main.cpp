@@ -56,6 +56,7 @@ int main() {
             gm::update_sprites(e, input);
             gm::update_background(bg, input);
 
+            gm::enemy_attack(e);
             gm::player_attack(e);
             for (uint8_t i = 0; i < e.enemy_count; ++i) {
                 if (e.enemies[i].health < gm::make_enemy(e.enemies[i].type, {}).health) {

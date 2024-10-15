@@ -75,9 +75,9 @@ struct Hitbox {
 };
 
 struct Player {
-    int16_t health  = INT16_MAX;
-    uint16_t attack = UINT16_MAX;
-    GLfloat speed = 3.0f;
+    int16_t health = 200;
+    int16_t attack = INT16_MAX;
+    GLfloat speed  = 3.0f;
 
     Hitbox hitbox = {
         .pos    = {(WORLD_WIDTH - 12) / 2.0f, (WORLD_HEIGHT - 18) / 2.0f},
@@ -100,7 +100,7 @@ struct Enemy {
     EnemyType type;
 
     int16_t health;
-    uint16_t attack;
+    int16_t attack;
 
     GLfloat speed;
 
@@ -142,7 +142,7 @@ constexpr Enemy make_enemy(EnemyType type, Coordinate pos) {
         return {
             .type           = type,
             .health         = INT16_MAX,
-            .attack         = UINT16_MAX,
+            .attack         = 1,
             .speed          = 1.5f,
             .hitbox         = {
                 .pos    = pos,

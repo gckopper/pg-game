@@ -8,11 +8,11 @@
 
 namespace gm {
 
-const uint16_t WINDOW_WIDTH  = 1280;
-const uint16_t WINDOW_HEIGHT = 720;
+constexpr uint16_t WINDOW_WIDTH  = 1280;
+constexpr uint16_t WINDOW_HEIGHT = 720;
 
-const GLfloat WORLD_WIDTH  = 640;
-const GLfloat WORLD_HEIGHT = 360;
+constexpr GLfloat WORLD_WIDTH  = 640;
+constexpr GLfloat WORLD_HEIGHT = 360;
 
 GLFWwindow* init_context(int width, int height, std::string title);
 void terminate();
