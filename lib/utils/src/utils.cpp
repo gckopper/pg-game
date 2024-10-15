@@ -30,7 +30,7 @@ GLFWwindow* gm::init_context(int width, int height, std::string title) {
 
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
