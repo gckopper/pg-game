@@ -204,7 +204,9 @@ void gm::enemy_attack(Entities& entities, Healthbar& healthbar) {
     if (highest_attack > 0) {
         entities.player.health -= highest_attack;
 
+        glUseProgram(healthbar.shader_program);
         glUniform1f(healthbar.u_health_percentage, entities.player.health / static_cast<GLfloat>(PLAYER_MAX_HEALTH));
+        glUseProgram(0);
     }
 
 }
