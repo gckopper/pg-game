@@ -192,7 +192,7 @@ void gm::player_attack(Entities& entities) {
     }
 }
 
-void gm::enemy_attack(Entities& entities) {
+void gm::enemy_attack(Entities& entities, Healthbar& healthbar) {
     int16_t highest_attack = 0;
 
     for (uint8_t i = 0; i < entities.enemy_count; ++i) {
@@ -201,7 +201,12 @@ void gm::enemy_attack(Entities& entities) {
         highest_attack = std::max(highest_attack, entities.enemies[i].attack);
     }
 
-    entities.player.health -= highest_attack;
+    if (highest_attack > 0) {
+        entities.player.health -= highest_attack;
+
+        glUniform1f(healthbar.u_health_percentage, entities.player.health / static_cast<GLfloat>(PLAYER_MAX_HEALTH));
+    }
+
 }
 
 void gm::update_background(Background& background, Input& input) {

@@ -3,11 +3,12 @@
 #include <game/types.hpp>
 #include <game/render.hpp>
 
-void gm::render(uint64_t time_delta, Entities& entities, Background& background) {
+void gm::render(uint64_t time_delta, Entities& entities, Background& background, Healthbar& healthbar) {
     const float time = time_delta / static_cast<float>(TICK_STEP.count());
 
     glClear(GL_COLOR_BUFFER_BIT);
     
+    // background
     glUseProgram(background.shader_program);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, background.texture);
@@ -17,6 +18,7 @@ void gm::render(uint64_t time_delta, Entities& entities, Background& background)
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 
+    // entities
     glUseProgram(entities.shader_program);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, entities.texture);
@@ -28,5 +30,14 @@ void gm::render(uint64_t time_delta, Entities& entities, Background& background)
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    glUseProgram(healthbar.shader_program);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, healthbar.texture);
+
+    glBindVertexArray(healthbar.vao);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
 

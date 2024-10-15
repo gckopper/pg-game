@@ -82,6 +82,48 @@ void gm::setup_entities(Entities& entities) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+void gm::setup_healthbar(Healthbar& healthbar) {
+    healthbar.shader_program = gm::make_shader_program("healthbar.vert", "healthbar.frag");
+
+    healthbar.u_health_percentage = glGetUniformLocation(healthbar.shader_program, "health_percentage");
+
+    glUniform1i(glGetUniformLocation(healthbar.shader_program, "texture_uniform"), 0);
+
+    healthbar.texture = gm::load_texture("./assets/healthbar.png");
+
+    const GLfloat vbo_data[] = {
+        healthbar.offset + healthbar.width, gm::WORLD_HEIGHT - healthbar.offset,                    1.0f, 1.0f,
+        healthbar.offset + healthbar.width, gm::WORLD_HEIGHT - healthbar.offset - healthbar.height, 1.0f, 0.0f,
+        healthbar.offset,                   gm::WORLD_HEIGHT - healthbar.offset - healthbar.height, 0.0f, 0.0f,
+        healthbar.offset,                   gm::WORLD_HEIGHT - healthbar.offset,                    0.0f, 1.0f
+    };
+
+    constexpr GLushort ebo_data[] = {0, 1, 3, 1, 2, 3};
+
+    glGenVertexArrays(1, &healthbar.vao);
+    glBindVertexArray(healthbar.vao);
+
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vbo_data), vbo_data, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*) 0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*) (2 * sizeof(GLfloat)));
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(ebo_data), ebo_data, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void gm::setup_background(Background& background) {
     background.shader_program = gm::make_shader_program("background.vert", "main.frag");
 

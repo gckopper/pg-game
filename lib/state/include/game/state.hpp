@@ -18,7 +18,7 @@ void update_vbo(Entities& entities);
 
 void player_attack(Entities& entities);
 
-void enemy_attack(Entities& entities);
+void enemy_attack(Entities& entities, Healthbar& healthbar);
 
 void update_background(Background& background, Input& input);
 
