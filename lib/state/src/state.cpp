@@ -6,6 +6,7 @@
 
 #include <glad/glad.h>
 
+#include <game/log.hpp>
 #include <game/sprite.hpp>
 #include <game/state.hpp>
 #include <game/types.hpp>
@@ -293,4 +294,57 @@ void gm::update_sprites(Entities& entities, Input& input) {
             p.attacking = true;
         } 
     }
+}
+
+void gm::add_text(const std::string text, const Coordinate pos, const float size, Font& font) {
+    constexpr auto get_char = [](char c) {
+        c -= 32;
+        return gm::Coordinate((c % static_cast<char>(CHARS_PER_ROW)) / CHARS_PER_ROW,
+                              (CHARS_PER_COLUMN - (c / static_cast<char>(CHARS_PER_ROW)) - 1) / CHARS_PER_COLUMN);
+    };
+
+    if (((font.offset/16) + text.size()) > MAX_TEXT_SIZE) {
+        LOG("Trying to add text to a full VBO.");
+        return;
+    }
+
+    float width  = size;
+    float height = width * 2.0f;
+
+    for (uint64_t i = 0; i < text.size(); ++i) {
+        for (uint64_t j = 0; j < 16; j += 4) {
+            font.vbo_data[font.offset + i * 16 + j]     = pos.x + (i * width);
+            font.vbo_data[font.offset + i * 16 + 1 + j] = pos.y;
+        }
+        // top left
+        font.vbo_data[font.offset + i * 16 + 5] += height;
+        // top right
+        font.vbo_data[font.offset + i * 16 + 8] += width;
+        font.vbo_data[font.offset + i * 16 + 9] += height;
+        // bottom right
+        font.vbo_data[font.offset + i * 16 + 12] += width;
+    }
+    for (uint64_t i = 0; i < text.size(); ++i) {
+        Coordinate coord = get_char(text[i]);
+        for (uint64_t j = 0; j < 16; j += 4) {
+            font.vbo_data[font.offset + i * 16 + 2 + j] = coord.x;
+            font.vbo_data[font.offset + i * 16 + 3 + j] = coord.y;
+        }
+        // top left
+        font.vbo_data[font.offset + i * 16 + 7] += 1.0f / CHARS_PER_COLUMN;
+        // top right
+        font.vbo_data[font.offset + i * 16 + 10] += 1.0f / CHARS_PER_ROW;
+        font.vbo_data[font.offset + i * 16 + 11] += 1.0f / CHARS_PER_COLUMN;
+        // bottom right
+        font.vbo_data[font.offset + i * 16 + 14] += 1.0f / CHARS_PER_ROW;
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, font.vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, font.offset*sizeof(GLfloat), text.size() * 16 * sizeof(GLfloat), font.vbo_data.data()+font.offset);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    font.offset += text.size()*16;
+}
+
+void gm::clear_text(Font& font) {
+    font.offset = 0;
 }

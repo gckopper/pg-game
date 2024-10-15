@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <iostream>
 #include <random>
 
 #include <glad/glad.h>
@@ -22,6 +23,14 @@ int main() {
 
     gm::Healthbar healthbar;
     gm::setup_healthbar(healthbar);
+
+    gm::Font font;
+    gm::setup_font(font);
+
+    gm::add_text(" !\"#$%", {0.f, gm::WORLD_HEIGHT - 20.0f}, 10.0f, font);
+    gm::add_text("pqrstuv", {0.f, 0.0f}, 8.0f, font);
+
+    std::cout << font.offset << '\n';
 
     gm::Input input;
 
@@ -68,7 +77,7 @@ int main() {
             last_tick_time += ratio * gm::TICK_STEP;
         }
 
-        gm::render(delta_time.count(), entities, background, healthbar);
+        gm::render(delta_time.count(), entities, background, healthbar, font);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

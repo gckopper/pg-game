@@ -26,6 +26,10 @@ void spawn_enemy(Entities& entities, std::mt19937& gen);
 
 void update_sprites(Entities& entities, Input& input);
 
+void add_text(const std::string text, const Coordinate pos, const float size, Font& font);
+
+void clear_text(Font& font);
+
 constexpr bool colliding(const Hitbox& lhs, const Hitbox& rhs) {
     return lhs.pos.x < rhs.pos.x  + rhs.width  &&
            lhs.pos.x + lhs.width  > rhs.pos.x  &&

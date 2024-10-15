@@ -188,4 +188,25 @@ constexpr const Sprite* get_sprite(EnemyType enemy_type, SpriteType sprite_type)
     return nullptr;
 }
 
+constexpr float CHARS_PER_ROW = 16.0f;
+constexpr float CHARS_PER_COLUMN = 8.0f;
+constexpr uint64_t MAX_TEXT_SIZE  = 1280ull;
+
+struct Font {
+    GLuint texture;
+
+    int texture_width;
+    int texture_height;
+
+    GLuint shader;
+    GLuint vao;
+    GLuint vbo;
+
+    uint64_t offset = 0;
+
+    std::array<GLfloat, MAX_TEXT_SIZE*16> vbo_data;
+};
+
+void setup_font(Font& font);
+
 }
