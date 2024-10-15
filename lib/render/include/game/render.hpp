@@ -4,4 +4,5 @@
 
 namespace gm {
     void render(uint64_t time_delta, Entities& entities, Background& background, Healthbar& healthbar, Font& font);
+    void render(Font& font);
 }

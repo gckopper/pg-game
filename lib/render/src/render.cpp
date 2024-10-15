@@ -44,3 +44,17 @@ void gm::render(uint64_t time_delta, Entities& entities, Background& background,
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+void gm::render(Font& font) {
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    // text
+    glUseProgram(font.shader);
+    glBindTexture(GL_TEXTURE_2D, font.texture);
+    glBindVertexArray(font.vao);
+
+    glDrawElements(GL_TRIANGLES, 6 * (font.offset/16), GL_UNSIGNED_SHORT, 0);
+
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
