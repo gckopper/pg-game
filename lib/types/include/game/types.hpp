@@ -74,8 +74,10 @@ struct Hitbox {
     uint8_t height;
 };
 
+constexpr int16_t PLAYER_MAX_HEALTH = 100;
+
 struct Player {
-    int16_t health = 200;
+    int16_t health = PLAYER_MAX_HEALTH;
     int16_t attack = INT16_MAX;
     GLfloat speed  = 3.0f;
 
@@ -91,6 +93,20 @@ struct Player {
     uint8_t sprite_tick  = 0;
     bool sprite_flipped  = false;
 };
+
+struct Healthbar {
+    GLfloat width  = 80.0f;
+    GLfloat height = 7.0f;
+    GLfloat offset = 16.0f;
+
+    GLuint vao;
+
+    GLuint shader_program;
+    GLuint texture;
+    GLint  u_health_percentage;
+};
+
+void setup_healthbar(Healthbar& healthbar);
 
 enum EnemyType {
     ORC
