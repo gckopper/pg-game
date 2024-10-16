@@ -1,7 +1,6 @@
 #include <chrono>
 #include <cstdint>
 #include <format>
-#include <iostream>
 #include <random>
 
 #include <glad/glad.h>
@@ -28,9 +27,6 @@ int main() {
 
     gm::Font font;
     gm::setup_font(font);
-
-
-    std::cout << font.offset << '\n';
 
     gm::Input input;
 
