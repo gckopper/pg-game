@@ -10,6 +10,8 @@ namespace gm {
 struct Input {
     Coordinate movement;
     bool attack;
+    // false = keyboard | true = gamepad 
+    bool is_gamepad;
 };
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
