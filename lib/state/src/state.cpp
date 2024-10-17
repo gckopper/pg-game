@@ -44,59 +44,37 @@ void gm::move_enemies(Entities &entities, Coordinate& player_movement) {
     for (uint8_t i = 0; i < entities.enemy_count; ++i) {
         Enemy& e = entities.enemies[i];
         
+        Coordinate original_pos = e.hitbox.pos;
         Coordinate delta = p.hitbox.pos - e.hitbox.pos;
-        GLfloat inv_hip = quake_rsqrt(delta.x * delta.x + delta.y * delta.y);
 
+        GLfloat inv_hip = quake_rsqrt(delta.x * delta.x + delta.y * delta.y);
         GLfloat dist = std::min(e.speed, 1.0f / inv_hip);
 
         delta = {dist * inv_hip * delta.x, dist * inv_hip * delta.y};
-        delta -= player_movement;
         e.hitbox.pos += delta;
 
         // collision
-        for (uint8_t j = 0; j < i; ++j) {
+        for (uint8_t j = 0; j < entities.enemy_count; ++j) {
             Enemy& e2 = entities.enemies[j];
             
-            if (!colliding(e.hitbox, e2.hitbox)) continue;
+            if (!colliding(e.hitbox, e2.hitbox) || j == i) continue;
 
-            Coordinate diff = e.hitbox.pos - e2.hitbox.pos;
+            GLfloat intersect_x = (original_pos.x > e2.hitbox.pos.x ? e2.hitbox.width : e.hitbox.width)   - std::abs(e.hitbox.pos.x - e2.hitbox.pos.x);
+            GLfloat intersect_y = (original_pos.y > e2.hitbox.pos.y ? e2.hitbox.height : e.hitbox.height) - std::abs(e.hitbox.pos.y - e2.hitbox.pos.y);
 
-            Coordinate x_shift, y_shift;
-
-            if (diff.x > 0.0f) {
-                x_shift.x = e2.hitbox.width - diff.x;
+            if (intersect_x / e2.hitbox.width * e2.hitbox.height < intersect_y) {
+                e.hitbox.pos.x += ((original_pos.x > e2.hitbox.pos.x) ? intersect_x : -intersect_x);
             } else {
-                x_shift.x = -(e2.hitbox.width + diff.x);
+                e.hitbox.pos.y += ((original_pos.y > e2.hitbox.pos.y) ? intersect_y : -intersect_y);
             }
-            x_shift.y = x_shift.x * (diff.y / diff.x);
-
-            if (diff.y > 0.0f) {
-                y_shift.y = e2.hitbox.height - diff.y;
-            } else {
-                y_shift.y = -(e2.hitbox.height + diff.y);
-            }
-            y_shift.x = y_shift.y / (diff.y / diff.x);
-
-            Coordinate delta_x = e.hitbox.pos + x_shift - entities.player.hitbox.pos;
-            delta_x *= delta_x;
-
-            Coordinate delta_y = e.hitbox.pos + y_shift - entities.player.hitbox.pos;
-            delta_y *= delta_y;
-
-            e.hitbox.pos -= delta;
-            if (delta_x.x + delta_x.y < delta_y.x + delta_y.y) {
-                delta += x_shift;
-            } else {
-                delta += y_shift;
-            }
-            e.hitbox.pos += delta;
         }
 
-        e.delta_pos = delta;
+        e.delta_pos = e.hitbox.pos - original_pos;
     }
 
     for (uint8_t i = 0; i < entities.enemy_count; ++i) {
         entities.enemies[i].hitbox.pos -= entities.enemies[i].delta_pos;
+        entities.enemies[i].delta_pos -= player_movement;
     }
 }
 
