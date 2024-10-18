@@ -191,6 +191,8 @@ constexpr const Sprite* get_sprite(EnemyType enemy_type, SpriteType sprite_type)
 constexpr float CHARS_PER_ROW = 16.0f;
 constexpr float CHARS_PER_COLUMN = 8.0f;
 constexpr uint64_t MAX_TEXT_SIZE  = 1280ull;
+// number of attributes in each instance
+constexpr uint64_t FONT_ATTRIB  = 5ull;
 
 struct Font {
     GLuint texture;
@@ -204,7 +206,7 @@ struct Font {
 
     uint64_t offset = 0;
 
-    std::array<GLfloat, MAX_TEXT_SIZE*16> vbo_data;
+    std::array<GLfloat, FONT_ATTRIB * MAX_TEXT_SIZE> vbo_data;
 };
 
 void setup_font(Font& font);

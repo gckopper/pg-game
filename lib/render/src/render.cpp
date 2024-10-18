@@ -39,7 +39,7 @@ void gm::render(uint64_t time_delta, Entities& entities, Background& background,
     glBindTexture(GL_TEXTURE_2D, font.texture);
     glBindVertexArray(font.vao);
 
-    glDrawElements(GL_TRIANGLES, 6 * (font.offset/16), GL_UNSIGNED_SHORT, 0);
+    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, font.offset/FONT_ATTRIB);
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -53,7 +53,7 @@ void gm::render(Font& font) {
     glBindTexture(GL_TEXTURE_2D, font.texture);
     glBindVertexArray(font.vao);
 
-    glDrawElements(GL_TRIANGLES, 6 * (font.offset/16), GL_UNSIGNED_SHORT, 0);
+    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, font.offset/FONT_ATTRIB);
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
