@@ -180,22 +180,22 @@ void gm::setup_font(Font& font) {
 
     glUniform1i(glGetUniformLocation(font.shader, "texture_uniform"), 0);
 
-    std::array<uint16_t, MAX_TEXT_SIZE * 6> ebo_data;
-    // ebo data
-    constexpr std::array<GLushort, 6> square{0, 1, 2, 0, 2, 3};
-    for (uint16_t i = 0; i < MAX_TEXT_SIZE; ++i) {
-        for (uint8_t j = 0; j < 6; ++j) {
-            ebo_data[i * 6 + j] = square[j] + i * 4;
-        }
-    }
+    std::array<GLfloat, 16> instance_data = {
+        0.0f, 0.0f,   0.0f,               0.0f,
+        0.0f, 1.0f,   0.0f,               1.0f/CHARS_PER_COLUMN,
+        1.0f, 1.0f,   1.0f/CHARS_PER_ROW, 1.0f/CHARS_PER_COLUMN,
+        1.0f, 0.0f,   1.0f/CHARS_PER_ROW, 0.0f,
+    };
+    GLuint instance_vbo;
 
     glGenVertexArrays(1, &font.vao);
     glBindVertexArray(font.vao);
 
-    GLuint ebo;
     glGenBuffers(1, &font.vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, font.vbo);
-    glBufferData(GL_ARRAY_BUFFER, 16 * MAX_TEXT_SIZE * sizeof(GLfloat), nullptr, GL_DYNAMIC_DRAW);
+    glGenBuffers(1, &instance_vbo);
+
+    glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
+    glBufferData(GL_ARRAY_BUFFER, instance_data.size() * sizeof(GLfloat), instance_data.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
@@ -203,9 +203,18 @@ void gm::setup_font(Font& font) {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ebo_data.size() * sizeof(GLushort), ebo_data.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, font.vbo);
+    glBufferData(GL_ARRAY_BUFFER, FONT_ATTRIB * MAX_TEXT_SIZE * sizeof(GLfloat), nullptr, GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, FONT_ATTRIB * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, FONT_ATTRIB * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, FONT_ATTRIB * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
+
+    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
+    glEnableVertexAttribArray(4);
+    glVertexAttribDivisor(2, 1);
+    glVertexAttribDivisor(3, 1);
+    glVertexAttribDivisor(4, 1);
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
