@@ -2,8 +2,6 @@
 #include <cmath>
 #include <cstdint>
 
-#include <glad/glad.h>
-
 #include <game/types.hpp>
 #include <game/shader.hpp>
 #include <game/sprite.hpp>
@@ -87,7 +85,10 @@ void gm::setup_healthbar(Healthbar& healthbar) {
 
     healthbar.u_health_percentage = glGetUniformLocation(healthbar.shader_program, "health_percentage");
 
+    glUseProgram(healthbar.shader_program);
     glUniform1i(glGetUniformLocation(healthbar.shader_program, "texture_uniform"), 0);
+    glUniform1f(healthbar.u_health_percentage, 1.0f);
+    glUseProgram(0);
 
     healthbar.texture = gm::load_texture("./assets/healthbar.png");
 

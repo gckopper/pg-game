@@ -8,6 +8,6 @@ uniform float delta_time;
 
 void main() {
     // 2D only
-    gl_Position = vec4(position, 1.0, 1.0);
+    gl_Position = vec4(position, 1.0f, 1.0f);
     tex_coord = texture_position + delta_time*texture_delta;
-};
+}

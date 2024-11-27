@@ -4,7 +4,7 @@ project(log)
 
 add_library(${PROJECT_NAME} STATIC "src/log.cpp" "include/game/log.hpp")
 
-target_link_libraries(${PROJECT_NAME} glad glfw)
+target_link_libraries(${PROJECT_NAME} glfw "$<$<NOT:$<PLATFORM_ID:Emscripten>>:glad>")
 
 if(DEBUG)
     target_compile_definitions(${PROJECT_NAME} INTERFACE DEBUG)

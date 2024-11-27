@@ -2,8 +2,15 @@
 #include <cstdint>
 #include <format>
 #include <random>
+#include <functional>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#define GL_GLEXT_PROTOTYPES
+#define EGL_EGLEXT_PROTOTYPES
+#else
 #include <glad/glad.h>
+#endif
 #include <GLFW/glfw3.h>
 
 #include <game/input.hpp>
@@ -12,6 +19,9 @@
 #include <game/time.hpp>
 #include <game/types.hpp>
 #include <game/utils.hpp>
+
+std::function<void()> loop;
+void main_loop() { loop(); }
 
 int main() {
     GLFWwindow* window = gm::init_context(gm::WINDOW_WIDTH, gm::WINDOW_HEIGHT, "PG Game");
@@ -44,7 +54,7 @@ int main() {
     uint64_t enemies_killed = 0;
     gm::add_text("Press <space> to start", {gm::WORLD_WIDTH/2 - 176.0f, gm::WORLD_HEIGHT/2.0f - 8.0f}, 16.0f, font);
 
-    while (!glfwWindowShouldClose(window)) {
+    loop = [&] {
         current_time = gm::get_time();
         delta_time = current_time - last_tick_time;
         switch (screen) {
@@ -107,7 +117,14 @@ int main() {
         }
         glfwSwapBuffers(window);
         glfwPollEvents();
-    }
+    };
+
+    #ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(main_loop, 0, true);
+#else
+    while (!glfwWindowShouldClose(window))
+        main_loop();
+#endif
 
     glfwTerminate();
 

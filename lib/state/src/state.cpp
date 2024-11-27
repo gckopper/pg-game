@@ -4,8 +4,6 @@
 #include <cstdlib>
 #include <span>
 
-#include <glad/glad.h>
-
 #include <game/log.hpp>
 #include <game/sprite.hpp>
 #include <game/state.hpp>

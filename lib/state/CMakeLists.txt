@@ -6,4 +6,4 @@ add_library(${PROJECT_NAME} STATIC "include/game/state.hpp" "src/state.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC "include")
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glad types sprite utils)
+target_link_libraries(${PROJECT_NAME} PUBLIC types sprite utils "$<$<NOT:$<PLATFORM_ID:Emscripten>>:glad>")

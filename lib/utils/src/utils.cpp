@@ -1,7 +1,15 @@
 #include <cstdint>
 #include <cstdlib>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#define GL_GLEXT_PROTOTYPES
+#define EGL_EGLEXT_PROTOTYPES
+#include <GLES3/gl3.h>
+#include <EGL/egl.h>
+#else
 #include <glad/glad.h>
+#endif
 #include <GLFW/glfw3.h>
 
 #include <game/input.hpp>
@@ -23,11 +31,13 @@ GLFWwindow* gm::init_context(int width, int height, std::string title) {
 
     glfwSetKeyCallback(window, &key_callback);
 
+#ifdef __EMSCRIPTEN__
+#else
     if (gladLoadGLLoader((GLADloadproc) glfwGetProcAddress) == 0) {
         LOG("Failed to initialize OpenGL context");
         terminate();
     }
-
+#endif
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

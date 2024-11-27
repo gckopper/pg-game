@@ -38,6 +38,8 @@ GLuint gm::compile_shader(std::string shader_code, GLenum shader_type) {
     glGetShaderiv(shader,  GL_COMPILE_STATUS, &success);
     // compilation failed
     if (!success) {
+        LOG("Failed to compile shader");
+        LOG(shader_code);
         log_shader(shader);
         terminate();
     }
@@ -45,11 +47,11 @@ GLuint gm::compile_shader(std::string shader_code, GLenum shader_type) {
 }
 
 GLuint gm::make_shader_program(std::string vert_path, std::string frag_path) {
-    GLuint vert_shader = compile_shader(load_shader(vert_path), GL_VERTEX_SHADER);
-    GLuint frag_shader = compile_shader(load_shader(frag_path), GL_FRAGMENT_SHADER);
-
     GLint success = 0;
     GLuint shaderProgram = glCreateProgram();
+
+    GLuint vert_shader = compile_shader(load_shader(vert_path), GL_VERTEX_SHADER);
+    GLuint frag_shader = compile_shader(load_shader(frag_path), GL_FRAGMENT_SHADER);
 
     glAttachShader(shaderProgram, vert_shader);
 
